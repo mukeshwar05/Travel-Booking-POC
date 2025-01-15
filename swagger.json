@@ -19,14 +19,14 @@
             }
           ],
           "responses": {
-            "200": { "description": "Booking added successfully" },
+            "201": { "description": "Booking added successfully" },
             "400": { "description": "Validation error" }
           }
         },
         "get": {
           "summary": "Get bookings",
           "parameters": [
-            { "name": "date", "in": "query", "required": false, "type": "string" },
+            { "name": "booking_date", "in": "query", "required": false, "type": "date" },
             { "name": "vendor", "in": "query", "required": false, "type": "string" }
           ],
           "responses": {
@@ -37,11 +37,11 @@
           }
         }
       },
-      "/bookings/{id}": {
+      "/bookings/{booking_id}": {
         "get": {
           "summary": "Get booking by ID",
           "parameters": [
-            { "name": "id", "in": "path", "required": true, "type": "string" }
+            { "name": "booking_id", "in": "path", "required": true, "type": "string" }
           ],
           "responses": {
             "200": { "description": "Booking details" },
@@ -51,7 +51,7 @@
         "delete": {
           "summary": "Delete booking by ID",
           "parameters": [
-            { "name": "id", "in": "path", "required": true, "type": "string" }
+            { "name": "booking_id", "in": "path", "required": true, "type": "string" }
           ],
           "responses": {
             "200": { "description": "Booking deleted successfully" },
@@ -64,17 +64,11 @@
       "Booking": {
         "type": "object",
         "properties": {
-          "bookingId": { "type": "string" },
-          "customerName": { "type": "string" },
-          "bookingDate": { "type": "string", "format": "date" },
+          "booking_id": { "type": "string" },
+          "customer_name": { "type": "string" },
+          "booking_date": { "type": "string", "format": "date" },
           "amount": { "type": "number" },
-          "vendor": {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string" }
-            },
-            "required": ["name"]
-          }
+          "vendor": { "type": "string" }
         }
       }
     }
