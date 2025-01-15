@@ -4,8 +4,7 @@ const createTables = () => {
   db.run(`
     CREATE TABLE IF NOT EXISTS vendors (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      contact_info TEXT NOT NULL
+      name TEXT NOT NULL
     )
   `, (err) => {
     if (err) {

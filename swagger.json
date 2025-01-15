@@ -1,1 +1,82 @@
-{}
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Booking Ingestion System API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/bookings": {
+        "post": {
+          "summary": "Add a new booking",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Booking"
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Booking added successfully" },
+            "400": { "description": "Validation error" }
+          }
+        },
+        "get": {
+          "summary": "Get bookings",
+          "parameters": [
+            { "name": "date", "in": "query", "required": false, "type": "string" },
+            { "name": "vendor", "in": "query", "required": false, "type": "string" }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of bookings",
+              "schema": { "type": "array", "items": { "$ref": "#/definitions/Booking" } }
+            }
+          }
+        }
+      },
+      "/bookings/{id}": {
+        "get": {
+          "summary": "Get booking by ID",
+          "parameters": [
+            { "name": "id", "in": "path", "required": true, "type": "string" }
+          ],
+          "responses": {
+            "200": { "description": "Booking details" },
+            "404": { "description": "Booking not found" }
+          }
+        },
+        "delete": {
+          "summary": "Delete booking by ID",
+          "parameters": [
+            { "name": "id", "in": "path", "required": true, "type": "string" }
+          ],
+          "responses": {
+            "200": { "description": "Booking deleted successfully" },
+            "404": { "description": "Booking not found" }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Booking": {
+        "type": "object",
+        "properties": {
+          "bookingId": { "type": "string" },
+          "customerName": { "type": "string" },
+          "bookingDate": { "type": "string", "format": "date" },
+          "amount": { "type": "number" },
+          "vendor": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" }
+            },
+            "required": ["name"]
+          }
+        }
+      }
+    }
+  }
+  
