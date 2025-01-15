@@ -1,9 +1,10 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
+const bookingRoutes = require('./routes/bookingRoutes');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 require('./model/bookingDb');
-const bookingRoutes = require('./routes/bookingRoutes');
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());

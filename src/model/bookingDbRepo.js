@@ -1,36 +1,24 @@
 const db = require('./bookingDb');
-const getDbAll = (query, params) => {
+
+const dbQuery = (method, query, params) => {
   return new Promise((resolve, reject) => {
-    db.all(query, params, (err, rows) => {
-      if (err) {
-        return reject(err); 
+    db[method](query, params, function (err, result) {
+      if (err) return reject(err);
+
+      if (method === 'run') {
+        resolve({ changes: this.changes, lastID: this.lastID });
+      } else {
+        resolve(result);
       }
-      resolve(rows); 
     });
   });
 };
 
-const getDbGet = (query, params) => {
-  return new Promise((resolve, reject) => {
-    db.get(query, params, (err, row) => {
-      if (err) {
-        return reject(err); 
-      }
-      resolve(row); 
-    });
-  });
-};
 
-const runDb = (query, params) => {
-  return new Promise((resolve, reject) => {
-    db.run(query, params, function(err) {
-      if (err) {
-        return reject(err); 
-      }
-      resolve({ changes: this.changes, lastID: this.lastID }); 
-    });
-  });
-}
+const getDbAll = (query, params) => dbQuery('all', query, params);
+const getDbGet = (query, params) => dbQuery('get', query, params);
+const runDb = (query, params) => dbQuery('run', query, params);
+
 
 exports.createBooking = async (booking_id, customer_name, booking_date, amount, vendor) => {
   const query = `
@@ -38,9 +26,9 @@ exports.createBooking = async (booking_id, customer_name, booking_date, amount, 
     VALUES (?, ?, ?, ?, ?)
   `;
   try {
-    const bookingId = await runDb(query, [booking_id, customer_name, booking_date, amount, vendor]);
+    await runDb(query, [booking_id, customer_name, booking_date, amount, vendor]);
   } catch (err) {
-    throw new Error('Error creating booking: ' + err.message);
+    throw new Error(`Error creating booking: ${err.message}`);
   }
 };
 
@@ -61,27 +49,27 @@ exports.getBookings = async (booking_date, vendor) => {
   try {
     return await getDbAll(query, params);
   } catch (err) {
-    throw new Error('Error fetching bookings: ' + err.message);
+    throw new Error(`Error fetching bookings: ${err.message}`);
   }
 };
 
 exports.getBookingById = async (booking_id) => {
+  const query = 'SELECT * FROM bookings WHERE booking_id = ?';
+
   try {
-    const query = `SELECT * FROM bookings WHERE booking_id = ?`;
-    const row = await getDbGet(query, [booking_id]);
-    return row;
+    return await getDbGet(query, [booking_id]);
   } catch (err) {
-    throw new Error('Failed to fetch booking: ' + err.message);
+    throw new Error(`Failed to fetch booking: ${err.message}`);
   }
 };
 
 exports.deleteBooking = async (booking_id) => {
-  const query = `DELETE FROM bookings WHERE booking_id = ?`;
+  const query = 'DELETE FROM bookings WHERE booking_id = ?';
 
   try {
-    const result = await runDb(query, [booking_id]);
-    return result.changes; 
+    const { changes } = await runDb(query, [booking_id]);
+    return changes;
   } catch (err) {
-    throw new Error('Error deleting booking: ' + err.message);
+    throw new Error(`Error deleting booking: ${err.message}`);
   }
 };

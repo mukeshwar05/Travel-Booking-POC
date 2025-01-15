@@ -26,7 +26,7 @@
         "get": {
           "summary": "Get bookings",
           "parameters": [
-            { "name": "booking_date", "in": "query", "required": false, "type": "date" },
+            { "name": "date", "in": "query", "required": false, "type": "date" },
             { "name": "vendor", "in": "query", "required": false, "type": "string" }
           ],
           "responses": {
@@ -37,11 +37,11 @@
           }
         }
       },
-      "/bookings/{booking_id}": {
+      "/bookings/{id}": {
         "get": {
           "summary": "Get booking by ID",
           "parameters": [
-            { "name": "booking_id", "in": "path", "required": true, "type": "string" }
+            { "name": "id", "in": "path", "required": true, "type": "string" }
           ],
           "responses": {
             "200": { "description": "Booking details" },
@@ -51,7 +51,7 @@
         "delete": {
           "summary": "Delete booking by ID",
           "parameters": [
-            { "name": "booking_id", "in": "path", "required": true, "type": "string" }
+            { "name": "id", "in": "path", "required": true, "type": "string" }
           ],
           "responses": {
             "200": { "description": "Booking deleted successfully" },

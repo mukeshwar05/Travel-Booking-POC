@@ -1,13 +1,12 @@
 const sqlite3 = require('sqlite3');
+
 const db = new sqlite3.Database('./src/bookings.db', (err) => {
   if (err) {
-    console.error('Error opening database:', err);
-  } else {
-    console.log('Connected to SQLite database.');
+    console.error('Error opening database:', err.message);
+    return;
   }
-});
+  console.log('Connected to SQLite database.');
 
-const createTables = () => {
   db.run(`
     CREATE TABLE IF NOT EXISTS bookings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,10 +20,9 @@ const createTables = () => {
     if (err) {
       console.error('Error creating bookings table:', err.message);
     } else {
-      console.log('Bookings table created or already exists.');
+      console.log('Bookings table ready.');
     }
   });
-};
+});
 
-createTables();
 module.exports = db;

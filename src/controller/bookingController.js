@@ -12,12 +12,12 @@ exports.createBooking = async (req, res) => {
     res.status(201).json({ message: 'Booking created successfully'});
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: `Failed to create booking : ${err}`});
+    return res.status(500).json({ error: 'Failed to create booking'});
   }
 };
 
 exports.getBookings = async (req, res) => {
-  const { booking_date, vendor } = req.query;
+  const { date: booking_date, vendor } = req.query;
 
   try {
     const rows = await bookingRepoDb.getBookings(booking_date, vendor);
@@ -29,7 +29,7 @@ exports.getBookings = async (req, res) => {
 };
 
 exports.getBookingById = async (req, res) => {
-  const { booking_id } = req.params;
+  const { id: booking_id } = req.params;
 
   try {
     const row = await bookingRepoDb.getBookingById(booking_id);
@@ -44,7 +44,7 @@ exports.getBookingById = async (req, res) => {
 };
 
 exports.deleteBooking = async (req, res) => {
-  const { booking_id } = req.params;
+  const { id: booking_id } = req.params;
 
   try {
     const isData = await bookingRepoDb.deleteBooking(booking_id);
