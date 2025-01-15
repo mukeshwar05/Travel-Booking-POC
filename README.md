@@ -11,6 +11,8 @@ This project is a backend service for ingesting, processing, and storing booking
 - **API Documentation**: Swagger.
 
 ---
+## Sequential Diagram
+![image](https://github.com/user-attachments/assets/b538f232-3c98-411f-807e-a0792e4ce07d)
 
 ## Setup and Usage
 
